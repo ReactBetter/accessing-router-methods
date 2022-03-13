@@ -1,46 +1,76 @@
-# Getting Started with Create React App
+# Accessing Router Methods
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This code explores how to access various react-router methods from a deeply-nested component. Three primary access methods include passing props, using a wrapper, and calling a hook.
 
-## Available Scripts
+## How To Start
 
-In the project directory, you can run:
+Before you begin, make sure you have the required tools installed on your computer. You can find them [here](https://github.com/ReactBetter/docs/blob/main/install_tools.md).
 
-### `npm start`
+Make sure you clone this repo on your machine. It will download the entire project for you. Use this command in your terminal where you want to download it:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
+git clone git@github.com:ReactBetter/accessing-router-methods.git
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+After downloading the files, you'll need to install the required React packages.
 
-### `npm test`
+```
+npm install
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Finally, start the project.
 
-### `npm run build`
+```
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+This will start the React project on your machine. If your browser didn't automatically open, you should visit [http://localhost:3000/](http://localhost:3000/).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## How To Switch Methods
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Inside the /src/components folder, you'll find 3 BreadCrumb components along with an index.ts file. In the index file, import the version of the BreadCrumb you want to use and comment out the others.
 
-### `npm run eject`
+### BreadCrumbProps
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+In order to use BreadCrumbProps.tsx, you'll need to actually pass down those props. There are a few changes that you'll need to make:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- In /src/App.tsx, `import { useReactRouter5Props } from './utils/router-v5'`
+- In /src/App.tsx, add `{...useReactRouter5Props()}` to each Route's element component props. For example:
+```
+element={<HomePage {...useReactRouter5Props()} />
+```
+- In /src/pages, add a `location` prop to each page file. For example:
+```
+export const About = ({ location }: any) => ( ...
+```
+- In /src/pages, pass a `location` prop to the GuttersLayout. For example:
+```
+<GuttersLayout title="About Us" location={location}>
+```
+- In /src/layouts/GuttersLayout.tsx, add `import { RouteComponentProps } from '../utils/router-v5';`
+- In /src/layouts/GuttersLayout.tsx, add `&& RouteComponentProps` to the end of your Props definition. For example:
+```
+type Props = {
+    children: React.ReactNode;
+    title: string;
+} && RouteComponentProps;
+```
+- Still in GuttersLayout.tsx, add `location` to your destructured props.
+```
+export const GuttersLayout = ({ children, location, title }: Props) => { ...
+```
+- Still in GuttersLayout.tsx, pass the `location` prop to BreadCrumb.
+```
+<BreadCrumb location={location} />
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Resources
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+You've got questions; we've got answers! Join the React community. Learn something new! Teach something you know. Share a meme.
 
-## Learn More
+- [**Subscribe On YouTube**](https://www.youtube.com/channel/UCwsC--bveNpM39MIqsicfUw?sub_confirmation=1)
+- [**Join The Discord**](https://discord.gg/Q7BbYEeASE)
+- [**Get Your Gear**](https://reactbetter.myspreadshop.com)
+- [**Browse The GitHub**](https://github.com/ReactBetter)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+We're glad you're here!
